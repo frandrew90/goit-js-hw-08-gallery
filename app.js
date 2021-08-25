@@ -80,10 +80,9 @@ const galleryItems = [
 const refs = {
   list: document.querySelector('.js-gallery'),
   lightBox: document.querySelector('.js-lightbox'),
-  // lightBoxOverlay: document.querySelector('.lightbox__overlay'),
-  // lightBoxContent: document.querySelector('.lightbox__content'),
   contentImg: document.querySelector('.lightbox__image'),
   closeButton: document.querySelector('.lightbox__button'),
+  listItem: document.querySelector('.gallery__item'),
 };
 
 const gallaryList = galleryItems
@@ -105,33 +104,20 @@ const gallaryList = galleryItems
   )
   .join('');
 
-// console.log(gallaryList);
-
 refs.list.insertAdjacentHTML('beforeend', gallaryList);
-
-// console.log(refs.list);
 
 refs.list.addEventListener('click', onImgClick);
 
 function onImgClick(e) {
   e.preventDefault();
-  // const listItem = e.target;
-  // if (listItem.classList.contains('gallery__item'))
   if (e.target !== e.currentTarget) {
     refs.lightBox.classList.add('is-open');
-    // createOriginalImg()
-    // refs.contentImg.src=
     refs.closeButton.addEventListener('click', onCloseBtn);
     window.addEventListener('keydown', onEscDown);
-    // e.target.src = e.target.dataset.source;
-    // console.log(e.target.src);
-    // console.log(e.target.dataset.source);
     refs.contentImg.src = e.target.dataset.source;
   }
-  // console.log(refs.contentImg.src);
 }
 
-// refs.closeButton.addEventListener('click', onCloseBtn);
 function onCloseBtn(e) {
   closeLightBox();
   removeCloseBtnListener();
