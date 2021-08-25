@@ -76,3 +76,84 @@ const galleryItems = [
 // Очистка значения атрибута src элемента img.lightbox__image.Это необходимо для
 // того, чтобы при следующем открытии модального окна, пока грузится изображение,
 //   мы не видели предыдущее.
+
+const refs = {
+  list: document.querySelector('.js-gallery'),
+  lightBox: document.querySelector('.js-lightbox'),
+  // lightBoxOverlay: document.querySelector('.lightbox__overlay'),
+  // lightBoxContent: document.querySelector('.lightbox__content'),
+  contentImg: document.querySelector('.lightbox__image'),
+  closeButton: document.querySelector('.lightbox__button'),
+};
+
+const gallaryList = galleryItems
+  .map(
+    ({ preview, original, description }) =>
+      `<li class="gallery__item">
+    <a
+      class="gallery__link"
+      href="${original}"
+    >
+      <img
+        class="gallery__image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>`
+  )
+  .join('');
+
+// console.log(gallaryList);
+
+refs.list.insertAdjacentHTML('beforeend', gallaryList);
+
+// console.log(refs.list);
+
+refs.list.addEventListener('click', onImgClick);
+
+function onImgClick(e) {
+  e.preventDefault();
+  // const listItem = e.target;
+  // if (listItem.classList.contains('gallery__item'))
+  if (e.target !== e.currentTarget) {
+    refs.lightBox.classList.add('is-open');
+    // createOriginalImg()
+    // refs.contentImg.src=
+    refs.closeButton.addEventListener('click', onCloseBtn);
+    window.addEventListener('keydown', onEscDown);
+    // e.target.src = e.target.dataset.source;
+    // console.log(e.target.src);
+    // console.log(e.target.dataset.source);
+    refs.contentImg.src = e.target.dataset.source;
+  }
+  // console.log(refs.contentImg.src);
+}
+
+// refs.closeButton.addEventListener('click', onCloseBtn);
+function onCloseBtn(e) {
+  closeLightBox();
+  removeCloseBtnListener();
+  removeEscListener();
+}
+
+function onEscDown(e) {
+  if (e.code === 'Escape') {
+    closeLightBox();
+    removeCloseBtnListener();
+    removeEscListener();
+  }
+}
+
+const closeLightBox = function (e) {
+  refs.lightBox.classList.remove('is-open');
+  refs.contentImg.src = '';
+};
+
+const removeEscListener = function (e) {
+  window.removeEventListener('keydown', onEscDown);
+};
+const removeCloseBtnListener = function (e) {
+  refs.closeButton.removeEventListener('click', onCloseBtn);
+};
